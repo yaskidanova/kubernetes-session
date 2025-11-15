@@ -1,0 +1,29 @@
+# replica set label selector 
+# equality based (app=nginx)
+# set based, expressions, operators
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchExpressions: # set based 
+      - key: tier
+        operator: In
+        values:
+          - frontend
+          - web
+          - db
+          - backend  
+    #matchLabels:    # quality based (app=nginx)
+      #tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.24
